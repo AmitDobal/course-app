@@ -3,4 +3,14 @@ spring:
     url: jdbc:postgresql://localhost:5433/course
     username: postgres
     password: postgres
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+app:
+  jwt:
+    secret: YourSecretKeyOfAtLeast32BytesLongForHS256Algorithm
+    expirationMs: 3600000
+    refreshExpirationMs: 86400000
 
