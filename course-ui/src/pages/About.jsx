@@ -1,5 +1,4 @@
-import React from 'react';
-import Button from '../components/Button';
+import Button from "../components/Button";
 
 const About = () => {
   return (
@@ -8,10 +7,13 @@ const About = () => {
         About Us
       </h2>
       <p className="text-gray-600 dark:text-gray-300 mb-4">
-        Course Platform is dedicated to providing high-quality, industry-relevant courses that empower learners to achieve their professional goals.
+        Course Platform is dedicated to providing high-quality,
+        industry-relevant courses that empower learners to achieve their
+        professional goals.
       </p>
       <p className="text-gray-600 dark:text-gray-300 mb-6">
-        Our platform combines expert instructors, interactive content, and a supportive community to create a comprehensive learning experience.
+        Our platform combines expert instructors, interactive content, and a
+        supportive community to create a comprehensive learning experience.
       </p>
       <Button variant="primary">Get Started</Button>
     </div>

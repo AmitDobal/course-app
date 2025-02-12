@@ -1,6 +1,6 @@
-import React, { createContext, useState, useCallback, useContext } from 'react';
-import PropTypes from 'prop-types';
-import Toast from './Toast';
+import { createContext, useState, useCallback, useContext } from "react";
+import PropTypes from "prop-types";
+import Toast from "./Toast";
 
 const ToastContext = createContext({
   addToast: () => {},
@@ -13,7 +13,7 @@ export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   // Function to add a new toast.
-  const addToast = useCallback((message, type = 'info', duration = 3000) => {
+  const addToast = useCallback((message, type = "info", duration = 3000) => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {

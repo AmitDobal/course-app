@@ -1,17 +1,16 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { AuthProvider } from './contexts/AuthContext';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ProtectedRoute from './components/ProtectedRoute';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import Courses from './pages/Courses';
-import Login from './pages/Login';
-import AdminDashboard from './pages/AdminDashboard';
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Courses from "./pages/Courses";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -29,8 +28,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
 
                 {/* Protected Routes */}
-                <Route 
-                  path="/dashboard" 
+                <Route
+                  path="/dashboard"
                   element={
                     <ProtectedRoute>
                       <Courses /> {/* Example protected route */}
@@ -39,10 +38,10 @@ function App() {
                 />
 
                 {/* Admin Routes */}
-                <Route 
-                  path="/admin" 
+                <Route
+                  path="/admin"
                   element={
-                    <ProtectedRoute allowedRoles={['admin']}>
+                    <ProtectedRoute allowedRoles={["admin"]}>
                       <AdminDashboard />
                     </ProtectedRoute>
                   }

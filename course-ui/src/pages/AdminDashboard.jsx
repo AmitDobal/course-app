@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import Button from '../components/Button';
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+import Button from "../components/Button";
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -11,7 +11,8 @@ const AdminDashboard = () => {
         Admin Dashboard
       </h2>
       <p className="text-gray-600 dark:text-gray-300 mb-6">
-        Welcome, {user ? user.name : 'Admin'}! Here you can manage courses, users, and orders.
+        Welcome, {user ? user.name : "Admin"}! Here you can manage courses,
+        users, and orders.
       </p>
       <div className="space-x-4">
         <Button variant="primary">Manage Courses</Button>
