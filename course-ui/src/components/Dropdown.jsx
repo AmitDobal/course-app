@@ -6,7 +6,7 @@ const Dropdown = ({ label, options, selected, onChange, className }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -14,9 +14,7 @@ const Dropdown = ({ label, options, selected, onChange, className }) => {
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleSelect = (option) => {
@@ -27,13 +25,11 @@ const Dropdown = ({ label, options, selected, onChange, className }) => {
   return (
     <div className={clsx('relative inline-block text-left', className)} ref={dropdownRef}>
       {label && (
-        <label className="block mb-1 text-gray-700 dark:text-gray-200">
-          {label}
-        </label>
+        <label className="block mb-1 text-gray-700 dark:text-gray-200">{label}</label>
       )}
       <button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => setOpen(prev => !prev)}
         className="inline-flex justify-between w-full px-4 py-2 border rounded bg-white dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring"
         aria-haspopup="true"
         aria-expanded={open}
@@ -69,21 +65,21 @@ Dropdown.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.any.isRequired,
-      label: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired
     })
   ).isRequired,
   selected: PropTypes.shape({
     value: PropTypes.any,
-    label: PropTypes.string,
+    label: PropTypes.string
   }),
   onChange: PropTypes.func.isRequired,
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 Dropdown.defaultProps = {
   label: '',
   selected: null,
-  className: '',
+  className: ''
 };
 
 export default Dropdown;
