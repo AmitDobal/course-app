@@ -15,9 +15,7 @@ const Input = React.forwardRef(({ label, error, type, className, ...rest }, ref)
         type={type}
         className={clsx(
           'w-full px-4 py-2 border rounded focus:outline-none focus:ring',
-          error
-            ? 'border-red-500 focus:ring-red-200'
-            : 'border-gray-300 focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100',
+          error ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100',
           className
         )}
         {...rest}
@@ -31,14 +29,14 @@ Input.propTypes = {
   label: PropTypes.string,
   error: PropTypes.string,
   type: PropTypes.string,
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 Input.defaultProps = {
   label: '',
   error: '',
   type: 'text',
-  className: '',
+  className: ''
 };
 
 export default Input;
