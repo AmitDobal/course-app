@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Courses from "./pages/Courses";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
 
                 {/* Protected Routes */}
                 <Route
@@ -41,7 +43,7 @@ function App() {
                 <Route
                   path="/admin"
                   element={
-                    <ProtectedRoute allowedRoles={["admin"]}>
+                    <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
                       <AdminDashboard />
                     </ProtectedRoute>
                   }

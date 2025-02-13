@@ -52,11 +52,18 @@ const Header = () => {
             </Button>
           </>
         ) : (
-          <Link
-            to="/login"
-            className="text-gray-800 dark:text-gray-100 hover:underline">
-            Login
-          </Link>
+          <>
+            <Link
+              to="/login"
+              className="text-gray-800 dark:text-gray-100 hover:underline">
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              className="text-gray-800 dark:text-gray-100 hover:underline">
+              Signup
+            </Link>
+          </>
         )}
         <ThemeToggle />
       </nav>

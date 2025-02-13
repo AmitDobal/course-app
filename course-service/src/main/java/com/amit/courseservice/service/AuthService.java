@@ -53,18 +53,22 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public AuthResponse login(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AuthException("User not found", HttpStatus.BAD_REQUEST));
+    public AuthResponse login(String userIdentifier, String password) {
+        User user = userRepository.findByUsername(userIdentifier)
+                .orElseGet(() -> userRepository.findByEmail(userIdentifier)
+                        .orElseThrow(() -> new AuthException("User not found", HttpStatus.BAD_REQUEST)));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new AuthException("Invalid credentials", HttpStatus.BAD_REQUEST);
         }
 
         String token = jwtService.generateToken(user.getUsername());
         var refreshToken = refreshTokenService.createRefreshToken(user);
 
-        return new AuthResponse(token, refreshToken.getToken(), "Bearer");
+        String role = user.getRoles().iterator().next().getName();
+
+        return new AuthResponse(token, refreshToken.getToken(),
+                "Bearer", user.getUsername(), role);
     }
 
     public AuthResponse refreshToken(RefreshTokenRequest request) {
@@ -76,6 +80,9 @@ public class AuthService {
         User user = refreshTokenOpt.getUser();
         String token = jwtService.generateToken(user.getUsername());
         var newRefreshToken = refreshTokenService.createRefreshToken(user);
-        return new AuthResponse(token, newRefreshToken.getToken(), "Bearer");
+        String role = user.getRoles().iterator().next().getName();
+
+        return new AuthResponse(token, newRefreshToken.getToken(),
+                "Bearer", user.getUsername(), role);
     }
 }

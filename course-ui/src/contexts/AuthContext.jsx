@@ -1,41 +1,56 @@
-import { createContext, useState, useEffect } from "react";
-
-// Dummy function for validating tokens
-const validateToken = (token) => token && token.length > 10;
+import { createContext, useState, useEffect } from 'react';
+import api from '../services/api';
+// import jwtDecode from 'jwt-decode'; // Optionally decode JWT to get info
 
 export const AuthContext = createContext({
   user: null,
   token: null,
   login: () => {},
-  logout: () => {},
+  logout: () => {}
 });
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
-  // On mount, try to get token from localStorage
+  // On mount, load stored token/user from localStorage
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedToken && validateToken(storedToken)) {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(storedUser);
     }
   }, []);
 
-  const login = ({ token, user }) => {
-    setToken(token);
-    setUser(user);
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+  const login = async ({ userIdentifier, password }) => {
+    try {
+      const response = await api.post('/auth/login', { userIdentifier, password });
+      const { accessToken, refreshToken, username: uname, role } = response.data;
+      setToken(accessToken);
+      const userData = { username: uname, role };
+      setUser(userData);
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('refreshToken', refreshToken);
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      await api.post('/auth/logout', { refreshToken });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
     setToken(null);
     setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('refreshToken');
   };
 
   return (

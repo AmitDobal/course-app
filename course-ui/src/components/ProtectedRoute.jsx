@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { AuthContext } from '../contexts/AuthContext';
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { AuthContext } from "../contexts/AuthContext";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user } = useContext(AuthContext);
@@ -13,7 +13,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
   // If roles are provided, check if the user has one of the roles
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <div className="p-8 text-center text-red-600">Unauthorized Access</div>;
+    return (
+      <div className="p-8 text-center text-red-600">Unauthorized Access</div>
+    );
   }
 
   return children;
