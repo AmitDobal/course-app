@@ -14,3 +14,6 @@ app:
     expirationMs: 3600000
     refreshExpirationMs: 86400000
 
+cors:
+  allowed-origin-pattern: 'http://localhost:5173'
+

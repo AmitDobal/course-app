@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
 
 const Dropdown = ({ label, options, selected, onChange, className }) => {
   const [open, setOpen] = useState(false);
@@ -13,8 +13,8 @@ const Dropdown = ({ label, options, selected, onChange, className }) => {
         setOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSelect = (option) => {
@@ -23,20 +23,32 @@ const Dropdown = ({ label, options, selected, onChange, className }) => {
   };
 
   return (
-    <div className={clsx('relative inline-block text-left', className)} ref={dropdownRef}>
+    <div
+      className={clsx("relative inline-block text-left", className)}
+      ref={dropdownRef}>
       {label && (
-        <label className="block mb-1 text-gray-700 dark:text-gray-200">{label}</label>
+        <label className="block mb-1 text-gray-700 dark:text-gray-200">
+          {label}
+        </label>
       )}
       <button
         type="button"
-        onClick={() => setOpen(prev => !prev)}
+        onClick={() => setOpen((prev) => !prev)}
         className="inline-flex justify-between w-full px-4 py-2 border rounded bg-white dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring"
         aria-haspopup="true"
-        aria-expanded={open}
-      >
-        <span>{selected ? selected.label : 'Select an option'}</span>
-        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d={open ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+        aria-expanded={open}>
+        <span>{selected ? selected.label : "Select an option"}</span>
+        <svg
+          className="w-5 h-5 ml-2"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d={open ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
+          />
         </svg>
       </button>
       {open && (
@@ -47,8 +59,7 @@ const Dropdown = ({ label, options, selected, onChange, className }) => {
                 <button
                   type="button"
                   onClick={() => handleSelect(option)}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                   {option.label}
                 </button>
               </li>
@@ -65,21 +76,21 @@ Dropdown.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.any.isRequired,
-      label: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired,
     })
   ).isRequired,
   selected: PropTypes.shape({
     value: PropTypes.any,
-    label: PropTypes.string
+    label: PropTypes.string,
   }),
   onChange: PropTypes.func.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Dropdown.defaultProps = {
-  label: '',
+  label: "",
   selected: null,
-  className: ''
+  className: "",
 };
 
 export default Dropdown;
