@@ -3,6 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5433/course
     username: postgres
     password: postgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -10,7 +11,7 @@ spring:
 
 app:
   jwt:
-    secret: YourSecretKeyOfAtLeast32BytesLongForHS256Algorithm
+    secret: 8557df154536b039d3dcbadb335f2eea516746b32249e455ad93079f623654672aae361f1d4e628ec7e70d571f3f034f48b420350b2e73ffc5787689861be6637e2d5cda87e33b2ee6fe647ffc8e6357f0e731620aee29b994d83e392d45813daeded455ac3d5f58c91dfe2c7c0d94267ec3c6da8e4687f857fe868f5c262892176411790cec6ed1b71d619abadcc8cdff7c30a55e23ffe603e519dcd1770b1a00a6848687d2a6b9ea44f235386f6e7531599534e1fcd4cece56256ae8b5254f23454777a9265a3c1666f63c64a6debac2481ff5e54abd577fe2f837f240ca3d12c43ea26fd301f853e4024bffccb42052de8922a0b6f4e1e1117d3f8f649198
     expirationMs: 3600000
     refreshExpirationMs: 86400000
 
