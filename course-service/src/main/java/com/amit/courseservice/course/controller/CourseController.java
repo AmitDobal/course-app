@@ -1,5 +1,7 @@
 package com.amit.courseservice.course.controller;
 
+import com.amit.courseservice.commons.dto.PaginationResponse;
+import com.amit.courseservice.commons.utils.ResponseUtils;
 import com.amit.courseservice.course.dto.CourseDTO;
 import com.amit.courseservice.course.mapper.CourseMapper;
 import com.amit.courseservice.course.service.CourseService;
@@ -20,10 +22,10 @@ public class CourseController {
     private final CourseMapper courseMapper;
 
     @GetMapping
-    public ResponseEntity<Page<CourseDTO>> getAllCourses(Pageable pageable) {
+    public ResponseEntity<PaginationResponse<CourseDTO>> getAllCourses(Pageable pageable) {
         Page<CourseDTO> courses = courseService.findAll(pageable)
             .map(courseMapper::toDto);
-        return ResponseEntity.ok(courses);
+        return ResponseEntity.ok(ResponseUtils.convertPageToPaginationResponse(courses));
     }
 
     @GetMapping("/{id}")
