@@ -8,8 +8,8 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
-    userIdentifier: "",
-    password: "",
+    userIdentifier: "amitsingh",
+    password: "Admin@1234",
   });
   const [error, setError] = useState("");
 
