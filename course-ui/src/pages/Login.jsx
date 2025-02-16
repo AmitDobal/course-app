@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import CookieUtils from "../utils/cookieUtils";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -21,8 +22,10 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(credentials);
-      // Redirect based on role; for example, admin users to /admin:
-      if (JSON.parse(localStorage.getItem("user")).role === "ROLE_ADMIN") {
+      // Retrieve the stored user from cookies
+      const storedUser = CookieUtils.getCookie("user");
+      const userRole = storedUser ? JSON.parse(storedUser).role : null;
+      if (userRole === "ROLE_ADMIN") {
         navigate("/admin");
       } else {
         navigate("/");

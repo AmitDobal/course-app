@@ -1,6 +1,6 @@
-import React from 'react';
-import Button from '../components/Button';
-import Tooltip from '../components/Tooltip';
+import React from "react";
+import Button from "../components/Button";
+import Tooltip from "../components/Tooltip";
 
 const Home = () => {
   return (
