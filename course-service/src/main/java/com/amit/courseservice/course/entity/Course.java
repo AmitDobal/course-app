@@ -21,7 +21,7 @@ public class Course extends BaseEntity {
     @Column(length = 10000)
     private String content;
     
-    // One-to-one relation with Pricing; cascading to propagate audit changes
-    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pricing_id", referencedColumnName = "id")
     private Pricing pricing;
 }

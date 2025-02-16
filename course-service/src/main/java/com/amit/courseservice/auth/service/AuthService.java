@@ -74,7 +74,7 @@ public class AuthService {
     public AuthResponse refreshToken(RefreshTokenRequest request) {
         var refreshTokenOpt = refreshTokenService.findByToken(request.getRefreshToken())
                 .orElseThrow(() -> new AuthException("Invalid refresh token", HttpStatus.BAD_REQUEST));
-        if (refreshTokenService.verifyExpiration(refreshTokenOpt))
+        if (!refreshTokenService.verifyExpiration(refreshTokenOpt))
             throw new AuthException("Invalid refresh token", HttpStatus.BAD_REQUEST);
 
         User user = refreshTokenOpt.getUser();
