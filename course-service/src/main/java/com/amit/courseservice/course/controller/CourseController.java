@@ -3,15 +3,21 @@ package com.amit.courseservice.course.controller;
 import com.amit.courseservice.commons.dto.PaginationResponse;
 import com.amit.courseservice.commons.utils.ResponseUtils;
 import com.amit.courseservice.course.dto.CourseDTO;
+import com.amit.courseservice.course.dto.CourseFilterDTO;
 import com.amit.courseservice.course.mapper.CourseMapper;
 import com.amit.courseservice.course.service.CourseService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -20,11 +26,13 @@ public class CourseController {
 
     private final CourseService courseService;
     private final CourseMapper courseMapper;
+    private final ObjectMapper objectMapper;
 
     @GetMapping
-    public ResponseEntity<PaginationResponse<CourseDTO>> getAllCourses(Pageable pageable) {
-        Page<CourseDTO> courses = courseService.findAll(pageable)
-            .map(courseMapper::toDto);
+    public ResponseEntity<PaginationResponse<CourseDTO>> getAllCourses(@RequestParam Map<String, Object> filters, Pageable pageable) {
+        CourseFilterDTO courseFilterDTO = objectMapper.convertValue(filters, CourseFilterDTO.class);
+        Page<CourseDTO> courses = courseService.findAll(courseFilterDTO, pageable)
+                .map(courseMapper::toDto);
         return ResponseEntity.ok(ResponseUtils.convertPageToPaginationResponse(courses));
     }
 
@@ -37,7 +45,13 @@ public class CourseController {
     @PostMapping
     public ResponseEntity<CourseDTO> createCourse(@Valid @RequestBody CourseDTO courseDTO) {
         CourseDTO saved = courseMapper.toDto(courseService.save(courseMapper.toEntity(courseDTO)));
-        return ResponseEntity.ok(saved);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/all")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createCourses(@Valid @RequestBody List<CourseDTO> courses) {
+        courseService.saveAll(courses.stream().map(courseMapper::toEntity).toList());
     }
 
     @PutMapping("/{id}")

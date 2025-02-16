@@ -12,8 +12,4 @@ public class PricingDTO {
     private Long id;
     private BigDecimal price;
     private BigDecimal discount;
-    private Instant createdAt;
-    private String createdBy;
-    private Instant updatedAt;
-    private String updatedBy;
 }

@@ -20,8 +20,6 @@ public class Pricing extends BaseEntity {
     @Column
     private BigDecimal discount;  // Optional discount field
     
-    // Each course has a unique pricing entry.
-    @OneToOne
-    @JoinColumn(name = "course_id", nullable = false, unique = true)
+    @OneToOne(mappedBy = "pricing")
     private Course course;
 }
