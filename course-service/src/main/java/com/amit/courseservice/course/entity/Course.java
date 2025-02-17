@@ -20,7 +20,10 @@ public class Course extends BaseEntity {
     
     @Column(length = 10000)
     private String content;
-    
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pricing_id", referencedColumnName = "id")
     private Pricing pricing;

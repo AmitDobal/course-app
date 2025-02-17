@@ -1,38 +1,44 @@
-import { createContext, useState, useEffect } from 'react';
-import api from '../services/api';
-// import jwtDecode from 'jwt-decode'; // Optionally decode JWT to get info
+import { createContext, useState, useEffect } from "react";
+import api from "../services/api";
+import { CookieUtils } from "../utils/cookieUtils";
+import authService from "../services/authService";
 
 export const AuthContext = createContext({
   user: null,
   token: null,
   login: () => {},
-  logout: () => {}
+  logout: () => {},
 });
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
-  // On mount, load stored token/user from localStorage
+  // On mount, load stored token/user from cookies
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const storedToken = CookieUtils.getCookie("token");
+    const storedUser = CookieUtils.getCookie("user");
     if (storedToken && storedUser) {
       setToken(storedToken);
-      setUser(storedUser);
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
   const login = async ({ userIdentifier, password }) => {
     try {
-      const response = await api.post('/auth/login', { userIdentifier, password });
-      const { accessToken, refreshToken, username: uname, role } = response.data;
+      const {
+        accessToken,
+        refreshToken,
+        username: uname,
+        role,
+      } = await authService.login({ userIdentifier, password });
       setToken(accessToken);
       const userData = { username: uname, role };
       setUser(userData);
-      localStorage.setItem('token', accessToken);
-      localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('refreshToken', refreshToken);
+      // Save tokens and user info in cookies (expires in 1 day)
+      CookieUtils.setCookie("token", accessToken, 1);
+      CookieUtils.setCookie("user", JSON.stringify(userData), 1);
+      CookieUtils.setCookie("refreshToken", refreshToken, 1);
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -41,16 +47,15 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const refreshToken = localStorage.getItem('refreshToken');
-      await api.post('/auth/logout', { refreshToken });
+      await authService.logout();
     } catch (error) {
       console.error("Logout error:", error);
     }
     setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('refreshToken');
+    CookieUtils.eraseCookie("token");
+    CookieUtils.eraseCookie("user");
+    CookieUtils.eraseCookie("refreshToken");
   };
 
   return (
